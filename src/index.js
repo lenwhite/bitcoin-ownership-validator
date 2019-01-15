@@ -1,1 +1,3 @@
-document.write('Hello World!')
+require("@babel/polyfill");
+
+document.write('Hello World!');

@@ -1,5 +1,8 @@
 # Key Signature Validator
 
+  npm install
+  npm run dev
+
 This is a program that generates a nonce for a Bitcoin wallet address. It then takes in a signature and checks that:
 
 1. The address is one that it has previously generated a nonce for
