@@ -17,7 +17,10 @@ module.exports = options => {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: [['@babel/preset-env', { useBuiltIns: 'entry', }]],
+            presets: [
+              ['@babel/preset-env', { useBuiltIns: 'entry', }],
+              '@babel/preset-react',
+            ],
           }
         }
       }]
