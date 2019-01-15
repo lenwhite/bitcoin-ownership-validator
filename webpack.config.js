@@ -3,7 +3,7 @@ const HWP = require('html-webpack-plugin');
 
 module.exports = options => {
   return {
-    entry: ["@babel/polyfill", path.join(__dirname, '/src/index.js')], // entry point
+    entry: path.join(__dirname, '/src/index.js'), // entry point
     output: {
       filename: 'bundle.js',
       path: path.join(__dirname, '/dist')
@@ -17,7 +17,7 @@ module.exports = options => {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: ['@babel/preset-env']
+            presets: [['@babel/preset-env', { useBuiltIns: 'entry', }]],
           }
         }
       }]
