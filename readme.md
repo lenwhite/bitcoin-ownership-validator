@@ -15,4 +15,6 @@ TBD
 
 ## To-Do
 
+* database & expressjs
+* Look into styled-components (or other methods of adding css to react?)
 * Add support for Ethereum addresses.

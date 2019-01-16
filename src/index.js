@@ -1,14 +1,31 @@
 require("@babel/polyfill");
 
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import NavBar from './components/navbar';
+import './static/chota.css';
 
-class HelloWorld extends Component {
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    return <div>Hello World!</div>
+    let navButtons = [{
+      text: 'Page 1',
+      link: 'Link 1'
+    }, {
+      text: 'Page 2',
+      link: 'Link 2'
+    }];
+
+    return (
+      <>
+        <NavBar buttons={navButtons} active={navButtons[0]} name='Wallet Validator' />
+        <div>Hello World!</div>
+      </>
+    )
   }
 }
 
-const App = () => <HelloWorld/>
-
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

@@ -10,20 +10,27 @@ module.exports = options => {
       //where the output file would be created (requires absolute path)
     },
     module: {
-      rules: [{ // rules for the webpack
-        test: /\.js$/, // all javascript files
-        exclude: /node_modules/, // excluding node modules
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            presets: [
-              ['@babel/preset-env', { useBuiltIns: 'entry', }],
-              '@babel/preset-react',
-            ],
+      rules: [ // rules for the webpack
+        {
+          test: /\.js$/, // all javascript files
+          exclude: /node_modules/, // excluding node modules
+          use: {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              presets: [
+                ['@babel/preset-env', { useBuiltIns: 'entry', }],
+                '@babel/preset-react',
+              ],
+            }
           }
+        }, {
+          test: /\.css$/,
+          use: [
+            { loader: 'style-loader' }, { loader: 'css-loader' }
+          ],
         }
-      }]
+      ]
     },
     plugins: [
       new HWP(
