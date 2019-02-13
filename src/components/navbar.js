@@ -1,38 +1,32 @@
 import React, { Component } from 'react';
+import { debug } from 'util';
 
 export default class NavBar extends Component {
 
   constructor(props) {
     super(props);
+    this.handleNavigation = this.handleNavigation.bind(this);
   }
 
-  renderButton(button) {
-    return (button) => {
-      if (button === this.props.active) {
-        return <a href={button.link} className="active" key={button.text}>{button.text}</a>
-      } else {
-        return <a href={button.link} key={button.text}>{button.text}</a>
-      }
-    }
+  handleNavigation(e){
+    e.preventDefault();
+    this.props.onPageChange(e.target.innerText);
   }
-
-  renderName() {
-    return <a className="brand" href="#">{this.props.name}</a>
-  }
-
-
 
   render() {
     return (
       <nav className="nav">
         <div className="nav-left">
-          {this.renderName()}
+          <div className="brand">{this.props.appName}</div>
           <div className="tabs">
-            {this.props.buttons.map(this.renderButton())}
+            {this.props.pages.map((page, index) => {
+                if (page === this.props.active) {
+                  return <a href="#" onClick={this.handleNavigation} key={index} className="active">{page}</a>
+                } else {
+                  return <a href="#" onClick={this.handleNavigation} key={index}>{page}</a>
+                }
+            })}
           </div>
-        </div>
-        <div className="nav-right">
-          <a className="button outline">Button</a>
         </div>
       </nav>
     );

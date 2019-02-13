@@ -1,7 +1,11 @@
 # Key Signature Validator
 
-  npm install
-  npm run dev
+Requires Node.JS and Heroku.
+
+``` bash
+npm install
+heroku local web
+```
 
 This is a program that generates a nonce for a Bitcoin wallet address. It then takes in a signature and checks that:
 
@@ -13,7 +17,15 @@ This is a program that generates a nonce for a Bitcoin wallet address. It then t
 
 TBD
 
+## Deployment
+
+``` bash
+git push heroku master
+```
+
 ## To-Do
+
+* heroku clear db
 
 http://www.react.express/data_component_state
 https://reactjs.org/docs/components-and-props.html
