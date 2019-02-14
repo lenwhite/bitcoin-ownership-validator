@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 var bitcoinWalletScheme = new mongoose.Schema({
-  address: { 
-    type: String, 
-    required: true, 
+  address: {
+    type: String,
+    required: true,
     unique: true,
     validate: {
       validator: address => {
@@ -12,20 +12,19 @@ var bitcoinWalletScheme = new mongoose.Schema({
       },
     }
   },
-  validation: {
-    message: String,
-    signedMessage: { 
-      type: String,
-      validate: {
-        validator: signedMessage => {
-          // TODO: validator for signature
-          return true;
-        }
+
+  message: String,
+  signedMessage: {
+    type: String,
+    validate: {
+      validator: signedMessage => {
+        // TODO: validator for signature
+        return true;
       }
     }
   }
 }, {
-  capped: 65536, 
+  capped: 65536,
   _id: false,
 });
 

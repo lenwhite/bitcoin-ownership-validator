@@ -9,7 +9,7 @@
     "build": "webpack",
     "start": "node server.js",
     "heroku-postbuild": "webpack -p",
-    "watch": "nodemon --exec \"heroku local\" --signal SIGTERM"
+    "watch": "nodemon --exec \"webpack -p && heroku local\" --signal SIGTERM"
   },
   "repository": {
     "type": "git",
@@ -41,5 +41,9 @@
     "mongoose": "^5.4.10",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["dist/*"],
+    "delay": "2500"
   }
 }

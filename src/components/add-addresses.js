@@ -10,6 +10,9 @@ export default class AddAddresses extends Component {
       useRandomNonce: false,
     }
 
+    this.address = React.createRef();
+    this.message = React.createRef();
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleNonce = this.toggleNonce.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -17,8 +20,20 @@ export default class AddAddresses extends Component {
   }
 
   handleSubmit(e) {
-    // TODO
     e.preventDefault();
+    console.log(e.target);
+    const data = new FormData(e.target);
+
+    for (let pair of data.entries()) {
+      console.log(pair[0]+ ': ' + pair[1]);
+    }
+
+    e.target.reset();
+
+    fetch('api/addresses', {
+      method: 'POST',
+      body: data,
+    });
   }
 
   toggleNonce(e) {
@@ -30,7 +45,11 @@ export default class AddAddresses extends Component {
   }
 
   newDefaultMessage() {
-    return `${this.state.defaultMessage}+${AddAddresses.generateRandomString(30)}`
+    if (this.state.useRandomNonce) {
+      return `${this.state.defaultMessage}+${AddAddresses.generateRandomString(30)}`;
+    } else {
+      return `${this.state.defaultMessage}`;
+    }
   }
 
   static generateRandomString(len) {
@@ -46,46 +65,50 @@ export default class AddAddresses extends Component {
 
   render() {
 
-    console.log(this.newDefaultMessage());
+    let defaultMessage = this.newDefaultMessage();
+
     return (<>
+      <form onSubmit={this.handleSubmit}>
         <fieldset>
           <legend>Select options:</legend>
           <div className="row">
-
-            <div className="col"><label>Type of address:
-              <select id="address_type">
-                <option>{this.state.addressType}</option>
-              </select>
-            </label></div>
 
             <div className="col-8"><label>Default message:
               <input
                 id="default_message"
                 type="Text"
+                defaultValue={this.state.defaultMessage}
                 onChange={this.handleMessageChange}
               />
               <label>
               <input
                 id="use_random_nonce"
                 type="checkbox"
+                defaultChecked={this.state.useRandomNonce}
                 onChange={this.toggleNonce}
               /> Add random nonce
               </label>
             </label></div>
+
+            <div className="col"><label>Type of address:
+              <select id="type">
+                <option>{this.state.addressType}</option>
+              </select>
+            </label></div>
+
           </div>
         </fieldset>
 
-      <form onSubmit={this.handleSubmit}>
         <fieldset>
           <legend>Addresses</legend>
 
           {/* last row  */}
           <div className="row">
             <div className="col">
-              <input id="address_count" type="text" placeholder="Address" />
+              <input id="address" name="address" type="text" placeholder="Address" ref={this.address} required />
             </div>
             <div className="col">
-              <input id="address_count" type="text" value={this.newDefaultMessage()} />
+              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} />
             </div>
           </div>
           <input type="submit" value="Submit" />
