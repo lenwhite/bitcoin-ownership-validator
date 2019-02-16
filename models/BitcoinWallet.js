@@ -8,8 +8,9 @@ var bitcoinWalletScheme = new mongoose.Schema({
     validate: {
       validator: address => {
         // TODO: validator for addresses
-        return true;
+        return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
       },
+      message: props => `${props.value} is not a valid bitcoin address!`
     }
   },
 
@@ -25,14 +26,13 @@ var bitcoinWalletScheme = new mongoose.Schema({
   }
 }, {
   capped: 65536,
-  _id: false,
 });
-
+/*
 bitcoinWalletScheme.methods.validate = function(signedMessage) {
   // TODO: function stub
   console.log(`Validating ${this.address}`);
   return false;
-}
+}*/
 
 bitcoinWalletScheme.index({ address: 1 });
 

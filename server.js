@@ -1,4 +1,6 @@
+require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const api = require('./api');
@@ -18,9 +20,11 @@ db.once('open', function callback () {
   console.log(`Connected to MongoDB`);
 });
 
+app.use(bodyParser.json({ strict:false }));
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", 
+  res.header("Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });

@@ -21,18 +21,24 @@ export default class AddAddresses extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target);
-    const data = new FormData(e.target);
+    const fd = new FormData(e.target);
 
-    for (let pair of data.entries()) {
-      console.log(pair[0]+ ': ' + pair[1]);
-    }
+    const json = Array.from(fd.entries()).reduce((acc, pair) => ({
+      ...acc,
+      [pair[0]]: pair[1],
+    }), {});
+
+    console.log(json);
 
     e.target.reset();
 
     fetch('api/addresses', {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       method: 'POST',
-      body: data,
+      body: AddAddresses.stringifyFormData(fd),
     });
   }
 
@@ -61,6 +67,14 @@ export default class AddAddresses extends Component {
     var arr = new Uint8Array((len || 40) / 2);
     window.crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
+  }
+
+  static stringifyFormData(fd) {
+    const data = {};
+    for (let key of fd.keys()) {
+      data[key] = fd.get(key);
+    }
+    return JSON.stringify(data, null, 2);
   }
 
   render() {
@@ -100,7 +114,7 @@ export default class AddAddresses extends Component {
         </fieldset>
 
         <fieldset>
-          <legend>Addresses</legend>
+          <legend>Addresses:</legend>
 
           {/* last row  */}
           <div className="row">

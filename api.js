@@ -8,20 +8,39 @@ router.get('/addresses', (req, res, next) => {
     .catch(next)
 });
 
+router.delete('addresses', (req, res) => {
+  // TODO: for debug/development purposes only
+  bitcoinWallet.collection.drop();
+})
+
 router.post('/addresses', (req, res, next) => {
+  console.log(req.body);
   if (req.body.address) {
 
     bitcoinWallet.findOne({'address': req.body.address})
       .then(data => {
-        if (data.count === 1) {
+        if (data == null) {
+          bitcoinWallet.create(req.body)
+            .then(data => res.json(data),
+              err => {
+              if (err.name === 'ValidationError') {
+                console.error('Error Validating!', err);
+                res.status(422).json(err);
+              } else {
+                next(err);
+              }
+            })
+        } else if (data.count === 1) {
           data[0].update(req.body)
             .then(data => res.json(data))
-            .catch(next)
-        } else {
-          bitcoinWallet.create(req.body)
-            .then(data => res.json(data))
-            .catch(next)
         }
+      },err => {
+          if (err.name === 'ValidationError') {
+            console.error('Error Validating!', err);
+            res.status(422).json(err);
+          } else {
+            next(err);
+          }
       })
   } else {
     res.json({
