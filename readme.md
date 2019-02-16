@@ -25,22 +25,20 @@ git push heroku master
 
 ## To-Do
 
-* heroku clear db
+* Heroku schedule to clear db periodically (although the capped collection would probably work on it's own?)
+  * maybe a service that periodically calls `/api/addresses/drop`?
+* Signature validation:
+  * https://reinproject.org/static/bitcoin-signature-tool/index.html#sign
+  * https://github.com/bitcoinjs/bitcoinjs-lib
+* Set nodemon to ignore changes in /src/, set webpack to --watch /src/ and rebuild to save on reloads
+  * https://itnext.io/auto-reload-a-full-stack-javascript-project-using-nodemon-and-webpack-dev-server-together-a636b271c4e
+* Figure out what's up with mongoose/nodejs promise library. Does `.catch` not work properly?
+  * https://stackoverflow.com/questions/30672265/why-can-i-not-chain-catch-when-calling-mongoose-model-create-in-node
 
-http://www.react.express/data_component_state
-https://reactjs.org/docs/components-and-props.html
 
-* routing: is react-router needed? also note that routing is low priority (there's two pages only!) see: 
-  * https://medium.freecodecamp.org/you-might-not-need-react-router-38673620f3d?gi=f4e52e9249db
-  * https://hackernoon.com/routing-in-react-the-uncomplicated-way-b2c5ffaee997
-  * http://jamesknelson.com/even-need-routing-library/
-  * https://www.google.com/search?q=do%20you%20need%20react-router
-  * https://reacttraining.com/react-router/web/guides/quick-start
-  * https://www.google.com/search?q=react%20router
+https://medium.com/@everdimension/how-to-handle-forms-with-just-react-ac066c48bd4f
 
-* expressjs
-  * https://daveceddia.com/deploy-react-express-app-heroku/
-  * https://www.google.com/search?q=expressjs%20react
+
 * database (is it just exposed through a restful api on another microservice?)
   * https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
   * https://blog.cloudboost.io/creating-your-first-mern-stack-application-b6604d12e4d3
@@ -50,7 +48,7 @@ https://reactjs.org/docs/components-and-props.html
   * https://medium.com/javascript-in-plain-english/full-stack-mongodb-react-node-js-express-js-in-one-simple-app-6cc8ed6de274
 * Look into styled-components (or other methods of adding css to react?)
 * Add support for Ethereum addresses.
-* Typed hinting? 
+* Typed hinting?
   * https://templecoding.com/blog/2016/03/31/creating-typescript-typings-for-existing-react-components/
   * https://medium.com/javascript-scene/you-might-not-need-typescript-or-static-types-aa7cb670a77b
   * https://strongloop.com/strongblog/type-hinting-in-javascript/
