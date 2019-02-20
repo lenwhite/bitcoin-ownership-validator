@@ -7,7 +7,7 @@ export default class AddAddresses extends Component {
     this.state = {
       addressType: 'bitcoin',
       defaultMessage: '',
-      useRandomNonce: false,
+      useRandomNonce: true,
     }
 
     this.address = React.createRef();
