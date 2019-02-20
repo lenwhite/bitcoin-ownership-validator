@@ -17,6 +17,8 @@ router.post('/addresses', (req, res, next) => {
   console.log(req.body);
 
   function handleValidationError(err) {
+    // TODO: proper error message
+
     if (err.name === 'ValidationError') {
       console.error('Error Validating!', err);
       res.status(422).json(err);
