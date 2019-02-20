@@ -38,7 +38,7 @@ export default class AddAddresses extends Component {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: AddAddresses.stringifyFormData(fd),
+      body: JSON.stringify(json),
     });
   }
 
@@ -67,14 +67,6 @@ export default class AddAddresses extends Component {
     var arr = new Uint8Array((len || 40) / 2);
     window.crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
-  }
-
-  static stringifyFormData(fd) {
-    const data = {};
-    for (let key of fd.keys()) {
-      data[key] = fd.get(key);
-    }
-    return JSON.stringify(data, null, 2);
   }
 
   render() {
