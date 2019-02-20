@@ -15,33 +15,30 @@ router.delete('addresses', (req, res) => {
 
 router.post('/addresses', (req, res, next) => {
   console.log(req.body);
-  if (req.body.address) {
 
+  function handleValidationError(err) {
+    if (err.name === 'ValidationError') {
+      console.error('Error Validating!', err);
+      res.status(422).json(err);
+    } else {
+      next(err);
+    }
+  }
+
+  if (req.body.address) {
     bitcoinWallet.findOne({'address': req.body.address})
       .then(data => {
         if (data == null) {
           bitcoinWallet.create(req.body)
-            .then(data => res.json(data),
-              err => {
-              if (err.name === 'ValidationError') {
-                console.error('Error Validating!', err);
-                res.status(422).json(err);
-              } else {
-                next(err);
-              }
-            })
+            .then(data => res.json(data))
+            .catch(handleValidationError)
         } else if (data.count === 1) {
           data[0].update(req.body)
             .then(data => res.json(data))
+            .catch(handleValidationError)
         }
-      },err => {
-          if (err.name === 'ValidationError') {
-            console.error('Error Validating!', err);
-            res.status(422).json(err);
-          } else {
-            next(err);
-          }
       })
+      .catch(handleValidationError);
   } else {
     res.json({
       error: 'Address is not specified',
@@ -50,3 +47,5 @@ router.post('/addresses', (req, res, next) => {
 });
 
 module.exports = router;
+
+
