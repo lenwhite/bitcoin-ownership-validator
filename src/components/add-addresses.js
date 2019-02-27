@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { withAlert } from 'react-alert';
 
-export default class AddAddresses extends Component {
+
+class AddAddresses extends Component {
 
   constructor(props) {
+
     super(props);
     this.state = {
       addressType: 'bitcoin',
       defaultMessage: '',
       useRandomNonce: true,
+      response: null,
     }
 
     this.address = React.createRef();
@@ -20,6 +24,8 @@ export default class AddAddresses extends Component {
   }
 
   handleSubmit(e) {
+
+
     e.preventDefault();
     const fd = new FormData(e.target);
 
@@ -28,7 +34,7 @@ export default class AddAddresses extends Component {
       [pair[0]]: pair[1],
     }), {});
 
-    console.log(json);
+    this.props.alert.show(JSON.stringify(json));
 
     e.target.reset();
 
@@ -41,7 +47,7 @@ export default class AddAddresses extends Component {
       body: JSON.stringify(json),
     });
 
-    console.log(response);
+    response.then(res => console.log(res));
   }
 
   toggleNonce(e) {
@@ -125,3 +131,5 @@ export default class AddAddresses extends Component {
     </>)
   }
 }
+
+export default withAlert()(AddAddresses);
