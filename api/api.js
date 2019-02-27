@@ -29,18 +29,18 @@ router.post('/addresses', (req, res, next) => {
 
   if (req.body.address) {
     bitcoinWallet.findOne({'address': req.body.address})
-      .then(data => {
+      .then((data) => {
         if (data == null) {
           bitcoinWallet.create(req.body)
             .then(data => res.json(data))
             .catch(handleValidationError)
-        } else if (data.count === 1) {
-          data[0].update(req.body)
-            .then(data => res.json(data))
-            .catch(handleValidationError)
+        } else {
+          data.updateOne(req.body)
+          .then(data => res.json(data))
+          .catch(handleValidationError)
         }
       })
-      .catch(handleValidationError);
+      .catch(next);
   } else {
     res.json({
       error: 'Address is not specified',

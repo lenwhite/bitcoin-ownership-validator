@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var Message = require('bitcore-message');
 
 var bitcoinWalletScheme = new mongoose.Schema({
   address: {
@@ -7,15 +8,12 @@ var bitcoinWalletScheme = new mongoose.Schema({
     unique: true,
   },
 
-  message: String,
+  message: {
+    type: String,
+    required: true,
+  },
   signature: String,
 });
-/*
-bitcoinWalletScheme.methods.validate = function(signedMessage) {
-  // TODO: function stub
-  console.log(`Validating ${this.address}`);
-  return false;
-}*/
 
 bitcoinWalletScheme.index({ address: 1 });
 
@@ -26,9 +24,24 @@ bitcoinWalletScheme.pre('validate', function (next) {
 
   if (this.signature) {
     console.log(`Validating ${this.address} signed message ${this.message} with signature ${this.signature}`);
-    this.invalidate('signature', `Invalid signature`, this.signature)
+
+    let verified = false;
+    try {
+      verified = new Message(this.message).verify(this.address, this.signature);
+    } catch(err) {
+      verified = false;
+    }
+
+    if (!verified) {
+      this.invalidate('signature', `Invalid signature`, this.signature)
+    }
   }
 
+  next();
+})
+
+bitcoinWalletScheme.pre('findOneAndUpdate', function (next) {
+  this.getOptions.runValidators = true;
   next();
 })
 

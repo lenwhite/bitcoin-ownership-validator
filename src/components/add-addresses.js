@@ -32,7 +32,7 @@ export default class AddAddresses extends Component {
 
     e.target.reset();
 
-    fetch('api/addresses', {
+    let response = fetch('api/addresses', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -40,6 +40,8 @@ export default class AddAddresses extends Component {
       method: 'POST',
       body: JSON.stringify(json),
     });
+
+    console.log(response);
   }
 
   toggleNonce(e) {
@@ -114,7 +116,7 @@ export default class AddAddresses extends Component {
               <input id="address" name="address" type="text" placeholder="Address" ref={this.address} required />
             </div>
             <div className="col">
-              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} />
+              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} required/>
             </div>
           </div>
           <input type="submit" value="Submit" />
