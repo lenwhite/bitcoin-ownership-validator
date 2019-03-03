@@ -63,6 +63,9 @@ class App extends Component {
             appName='Wallet Validator'
             onPageChange={this.handlePageChange}
           />
+          <p>
+            This is a simple tool to validate ownership of a bitcoin wallet address (e.g. if you want to do an audit and obtain proof-of-ownership). Specify a message for a bitcoin wallet address, and then verify that the provided signature matches that stored message and address.
+          </p>
           {Page}
         </div>
       </AlertProvider>
