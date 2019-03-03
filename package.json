@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --mode development --open --hot",
+    "dev": "webpack --mode=development --watch",
     "build": "webpack",
     "start": "node server.js",
     "heroku-postbuild": "webpack -p",
-    "watch": "nodemon --exec \"webpack -p && heroku local\" --signal SIGTERM"
+    "watch": "nodemon --ignore src/ --ignore dist/ --exec \"heroku local\" --signal SIGTERM"
   },
   "repository": {
     "type": "git",
@@ -44,13 +44,13 @@
     "mongoose": "^5.4.16",
     "react": "^16.8.3",
     "react-alert": "^5.1.0",
-    "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.8.3",
     "react-transition-group": "^2.6.0"
   },
   "nodemonConfig": {
     "ignore": [
-      "dist/*"
+      "dist/*",
+      "src/*"
     ],
     "delay": "2500"
   }

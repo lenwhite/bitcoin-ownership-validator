@@ -25,8 +25,8 @@ class AddAddresses extends Component {
 
   handleSubmit(e) {
 
-
     e.preventDefault();
+    e.persist();
     const fd = new FormData(e.target);
 
     const json = Array.from(fd.entries()).reduce((acc, pair) => ({
@@ -34,11 +34,8 @@ class AddAddresses extends Component {
       [pair[0]]: pair[1],
     }), {});
 
-    this.props.alert.show(JSON.stringify(json));
 
-    e.target.reset();
-
-    let response = fetch('api/addresses', {
+    let response = fetch('api/addresses/add', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -47,20 +44,34 @@ class AddAddresses extends Component {
       body: JSON.stringify(json),
     });
 
-    response.then(res => console.log(res));
+    let success;
+
+    response.then(res => {
+      success = res.ok;
+      console.log(success);
+      return res.json()
+    }).then(json => {
+      if (success) {
+        this.props.alert.success(json.message);
+        e.target.reset();
+      } else {
+        this.props.alert.error(json.message);
+      }
+    })
+
   }
 
   toggleNonce(e) {
-    this.setState({useRandomNonce: e.target.checked});
+    this.setState({ useRandomNonce: e.target.checked });
   }
 
   handleMessageChange(e) {
-    this.setState({defaultMessage: e.target.value});
+    this.setState({ defaultMessage: e.target.value });
   }
 
   newDefaultMessage() {
     if (this.state.useRandomNonce) {
-      return `${this.state.defaultMessage}+${AddAddresses.generateRandomString(30)}`;
+      return `${this.state.defaultMessage}+${AddAddresses.generateRandomString(32)}`;
     } else {
       return `${this.state.defaultMessage}`;
     }
@@ -68,7 +79,7 @@ class AddAddresses extends Component {
 
   static generateRandomString(len) {
     // dec2hex :: Integer -> String
-    function dec2hex (dec) {
+    function dec2hex(dec) {
       return ('0' + dec.toString(16)).substr(-2);
     }
 
@@ -95,12 +106,12 @@ class AddAddresses extends Component {
                 onChange={this.handleMessageChange}
               />
               <label>
-              <input
-                id="use_random_nonce"
-                type="checkbox"
-                defaultChecked={this.state.useRandomNonce}
-                onChange={this.toggleNonce}
-              /> Add random nonce
+                <input
+                  id="use_random_nonce"
+                  type="checkbox"
+                  defaultChecked={this.state.useRandomNonce}
+                  onChange={this.toggleNonce}
+                /> Add random nonce
               </label>
             </label></div>
 
@@ -122,7 +133,7 @@ class AddAddresses extends Component {
               <input id="address" name="address" type="text" placeholder="Address" ref={this.address} required />
             </div>
             <div className="col">
-              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} required/>
+              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} required />
             </div>
           </div>
           <input type="submit" value="Submit" />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withAlert } from 'react-alert';
 
-export default class ValidateSignatures extends Component {
+class ValidateSignatures extends Component {
 
   constructor(props) {
     super(props);
@@ -9,7 +10,7 @@ export default class ValidateSignatures extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    e.persist();
     const fd = new FormData(e.target);
 
     const json = Array.from(fd.entries()).reduce((acc, pair) => ({
@@ -17,19 +18,30 @@ export default class ValidateSignatures extends Component {
       [pair[0]]: pair[1],
     }), {});
 
-    console.log(json);
 
-    //e.target.reset();
-
-    fetch('api/addresses', {
+    let response = fetch('api/addresses/validate', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify(json),
     });
 
+    let success;
+
+    response.then(res => {
+      success = res.ok;
+      console.log(response);
+      return res.json()
+    }).then(json => {
+      if (success) {
+        this.props.alert.success(json.message);
+        e.target.reset();
+      } else {
+        this.props.alert.error(json.message);
+      }
+    });
   }
 
   render() {
@@ -63,3 +75,5 @@ export default class ValidateSignatures extends Component {
     </>)
   }
 }
+
+export default withAlert()(ValidateSignatures);

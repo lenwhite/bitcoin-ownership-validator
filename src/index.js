@@ -6,7 +6,7 @@ import NavBar from './components/navbar';
 import AddAddresses from './components/add-addresses';
 import ValidateSignatures from './components/validate-signatures';
 import { positions as alertPositions, Provider as AlertProvider } from 'react-alert';
-import AlertTemplate from 'react-alert-template-basic'
+import AlertTemplate from './components/alert';
 
 import './static/chota.css';
 
@@ -47,7 +47,7 @@ class App extends Component {
       <AlertProvider
         template={AlertTemplate}
         position={alertPositions.BOTTOM_CENTER}
-        timeout={5000}
+        timeout={15000}
       >
         <div className="container">
           <NavBar
