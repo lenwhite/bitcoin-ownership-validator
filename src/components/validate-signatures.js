@@ -52,22 +52,17 @@ class ValidateSignatures extends Component {
 
           <div className="row">
             <div className="col">
-              <input id="address" name="address" type="text" placeholder="Address" ref={this.address} required />
+              <input id="address" name="address" type="text" placeholder="Address" required />
             </div>
             <div className="col">
-              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} required />
+              <input id="message" name="message" type="text" placeholder="Message" required />
             </div>
           </div>
 
           <div className="row">
-            <div className="col"><label>Signature
-              <textarea
-                rows="3"
-                id="signature"
-                name="signature"
-                type="text"
-              />
-            </label></div>
+            <div className="col">
+            <input id="signature" name="signature" type="text" placeholder="Signature" required />
+            </div>
           </div>
           <input type="submit" value="Submit" />
         </fieldset>
