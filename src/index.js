@@ -2,9 +2,13 @@ require("@babel/polyfill");
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 import NavBar from './components/navbar';
+
 import AddAddresses from './components/add-addresses';
 import ValidateSignatures from './components/validate-signatures';
+import ViewAddresses from './components/view-addresses';
+
 import { positions as alertPositions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from './components/alert';
 
@@ -16,7 +20,7 @@ class App extends Component {
 
     // is just a single page app, not using react-router for now
     this.state = {
-      pages: ['Add Addresses', 'Validate Signatures'],
+      pages: ['Add Address', 'Validate Signature', 'List Addresses'],
     };
 
     this.state.activePage = this.state.pages[0];
@@ -33,11 +37,14 @@ class App extends Component {
     let Page;
 
     switch (this.state.activePage) {
-      case 'Add Addresses':
+      case 'Add Address':
         Page = <AddAddresses />
         break;
-      case 'Validate Signatures':
+      case 'Validate Signature':
         Page = <ValidateSignatures />
+        break;
+      case 'List Addresses':
+        Page = <ViewAddresses />
         break;
       default:
         Page = <>{this.state.activePage}</>
