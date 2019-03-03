@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { withAlert } from 'react-alert';
 
-export default class ViewAddresses extends Component {
+class ViewAddresses extends Component {
 
   constructor(props) {
     super(props);
@@ -8,12 +9,27 @@ export default class ViewAddresses extends Component {
     this.state = {
       addresses: null,
     }
+
+    this.fetchData = this.fetchData.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+
   }
 
   componentWillMount() {
+    this.fetchData()
+  }
+
+  fetchData() {
     fetch('/api/addresses')
       .then(res => res.json())
       .then(data => this.setState({ addresses: data }))
+  }
+
+  handleDelete() {
+    this.setState({ addresses: null });
+    fetch('api/addresses', {
+      method: 'DELETE',
+    }).then(this.fetchData());
   }
 
 
@@ -22,16 +38,20 @@ export default class ViewAddresses extends Component {
       return <>Loading...</>
     }
 
+    if (this.state.addresses.length === 0) {
+      return <>No addresses.</>
+    }
+
     return (<>
       {this.state.addresses.map((wallet, index) => {
-        return (<div className="card" id={index}>
+        return (<div className="card" key={index}>
           <header><h4>
             <div className="row">
               <div className="col-2">
                 {wallet.signature ?
-                  <span class="tag is-full-width text-success is-text-center">Validated </span>
+                  <span className="tag is-full-width text-success is-text-center">Validated </span>
                   :
-                  <span class="tag is-full-width text-error is-text-center">Not Validated </span>
+                  <span className="tag is-full-width text-error is-text-center">Not Validated </span>
                 }
               </div>
               <div className="col">
@@ -46,7 +66,13 @@ export default class ViewAddresses extends Component {
           }</div>
         </div>)
       })}
+      <hr />
+      <p>
+        <button onClick={this.handleDelete}>Delete All</button>
+      </p>
 
     </>)
   }
 }
+
+export default withAlert()(ViewAddresses);
