@@ -138,7 +138,7 @@ class AddAddresses extends Component {
             <input id="message" name="message" type="text" placeholder="Message" value={message} onChange={this.handleMessageChange} required />
           </div>
         </div>
-        <input type="submit" value="Submit" /> <input type="reset" value="Clear" onClick={() => this.setState( { useRandomNonce: this.state.useRandomNonce })  }/>
+        <input type="submit" value="Submit" /> <input type="reset" value="Clear" onClick={() => this.setState( { useRandomNonce: this.state.useRandomNonce, message: null })  }/>
       </fieldset>
     </form>)
   }
