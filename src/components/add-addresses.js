@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withAlert } from 'react-alert';
 
-
 class AddAddresses extends Component {
 
   constructor(props) {
@@ -10,17 +9,15 @@ class AddAddresses extends Component {
     this.state = {
       addressType: 'bitcoin',
       defaultMessage: '',
+      message: null,
       useRandomNonce: true,
-      response: null,
     }
-
-    this.address = React.createRef();
-    this.message = React.createRef();
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleNonce = this.toggleNonce.bind(this);
-    this.handleMessageChange = this.handleMessageChange.bind(this);
-    this.newDefaultMessage = this.newDefaultMessage.bind(this);
+    this.handleDefaultMessageChange = this.handleDefaultMessageChange.bind(this);
+    this.message = this.message.bind(this);
+    this.handleMessageChange = this.handleMessageChange.bind(this)
   }
 
   handleSubmit(e) {
@@ -65,16 +62,22 @@ class AddAddresses extends Component {
     this.setState({ useRandomNonce: e.target.checked });
   }
 
-  handleMessageChange(e) {
+  handleDefaultMessageChange(e) {
     this.setState({ defaultMessage: e.target.value });
   }
 
-  newDefaultMessage() {
-    if (this.state.useRandomNonce) {
+  message() {
+    if (this.state.message) {
+      return this.state.message;
+    } else if (this.state.useRandomNonce) {
       return `${this.state.defaultMessage}+${AddAddresses.generateRandomString(32)}`;
     } else {
-      return `${this.state.defaultMessage}`;
+      return this.state.defaultMessage;
     }
+  }
+
+  handleMessageChange(e) {
+    this.setState( { message: e.target.value });
   }
 
   static generateRandomString(len) {
@@ -90,56 +93,54 @@ class AddAddresses extends Component {
 
   render() {
 
-    let defaultMessage = this.newDefaultMessage();
+    let message = this.message();
 
-    return (<>
-      <form onSubmit={this.handleSubmit}>
-        <fieldset>
-          <legend>Select options:</legend>
-          <div className="row">
+    return (<form onSubmit={this.handleSubmit}>
+      <fieldset>
+        <legend>Select options:</legend>
+        <div className="row">
 
-            <div className="col-8"><label>Default message:
+          <div className="col-8"><label>Default message:
               <input
-                id="default_message"
-                type="Text"
-                defaultValue={this.state.defaultMessage}
-                onChange={this.handleMessageChange}
-              />
-              <label>
-                <input
-                  id="use_random_nonce"
-                  type="checkbox"
-                  defaultChecked={this.state.useRandomNonce}
-                  onChange={this.toggleNonce}
-                /> Add random nonce
+              id="default_message"
+              type="Text"
+              defaultValue={this.state.defaultMessage}
+              onChange={this.handleDefaultMessageChange}
+            />
+            <label>
+              <input
+                id="use_random_nonce"
+                type="checkbox"
+                defaultChecked={this.state.useRandomNonce}
+                onChange={this.toggleNonce}
+              /> Add random nonce
               </label>
-            </label></div>
+          </label></div>
 
-            <div className="col"><label>Type of address:
+          <div className="col"><label>Type of address:
               <select id="type">
-                <option>{this.state.addressType}</option>
-              </select>
-            </label></div>
+              <option>{this.state.addressType}</option>
+            </select>
+          </label></div>
 
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Addresses:</legend>
+
+        {/* last row  */}
+        <div className="row">
+          <div className="col">
+            <input id="address" name="address" type="text" placeholder="Address" required />
           </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Addresses:</legend>
-
-          {/* last row  */}
-          <div className="row">
-            <div className="col">
-              <input id="address" name="address" type="text" placeholder="Address" ref={this.address} required />
-            </div>
-            <div className="col">
-              <input id="message" name="message" type="text" placeholder="Message" ref={this.message} defaultValue={defaultMessage} required />
-            </div>
+          <div className="col">
+            <input id="message" name="message" type="text" placeholder="Message" value={message} onChange={this.handleMessageChange} required />
           </div>
-          <input type="submit" value="Submit" />
-        </fieldset>
-      </form>
-    </>)
+        </div>
+        <input type="submit" value="Submit" /> <input type="reset" value="Clear" onClick={() => this.setState( { useRandomNonce: this.state.useRandomNonce })  }/>
+      </fieldset>
+    </form>)
   }
 }
 
