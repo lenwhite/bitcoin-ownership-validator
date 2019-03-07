@@ -51,6 +51,7 @@ class AddAddresses extends Component {
       if (success) {
         this.props.alert.success(json.message);
         e.target.reset();
+        this.setState( { message: null } );
       } else {
         this.props.alert.error(json.message);
       }
