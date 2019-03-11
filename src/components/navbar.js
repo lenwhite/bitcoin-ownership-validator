@@ -5,12 +5,6 @@ class NavBar extends Component {
 
   constructor(props) {
     super(props);
-    this.handleNavigation = this.handleNavigation.bind(this);
-  }
-
-  handleNavigation(e){
-    e.preventDefault();
-    this.props.onPageChange(e.target.innerText);
   }
 
   render() {
@@ -21,10 +15,10 @@ class NavBar extends Component {
           <div className="tabs">
             {this.props.routes.map((route, index) => {
               if (route.path === this.props.location.pathname) {
-                  return <a key={index} className="active">{route.text}</a>
-                } else {
-                  return <Link key={index} to={route.path}>{route.text}</Link>
-                }
+                return <a key={index} className="active">{route.text}</a>
+              } else {
+                return <Link key={index} to={route.path}>{route.text}</Link>
+              }
             })}
           </div>
         </div>
