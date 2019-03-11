@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 
-export default class NavBar extends Component {
+class NavBar extends Component {
 
   constructor(props) {
     super(props);
@@ -18,11 +19,11 @@ export default class NavBar extends Component {
         <div className="nav-left">
           <div className="brand">{this.props.appName}</div>
           <div className="tabs">
-            {this.props.pages.map((page, index) => {
-                if (page === this.props.active) {
-                  return <a href="#" onClick={this.handleNavigation} key={index} className="active">{page}</a>
+            {this.props.routes.map((route, index) => {
+              if (route.path === this.props.location.pathname) {
+                  return <a key={index} className="active">{route.text}</a>
                 } else {
-                  return <a href="#" onClick={this.handleNavigation} key={index}>{page}</a>
+                  return <Link key={index} to={route.path}>{route.text}</Link>
                 }
             })}
           </div>
@@ -31,3 +32,5 @@ export default class NavBar extends Component {
     );
   }
 }
+
+export default withRouter(NavBar);

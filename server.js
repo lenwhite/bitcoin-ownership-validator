@@ -33,8 +33,11 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use('/api', api);
 
-app.get('/', (req, res) => {
+const reactIndex = (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+}
+
+app.get('/', reactIndex);
+app.get('/*', reactIndex);
 
 app.listen(port, () => console.log(`Hello World listening on port ${port}`));
