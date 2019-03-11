@@ -16,3 +16,10 @@ Specify a message for a bitcoin wallet address, and then verify that the provide
 ``` bash
 git push heroku master
 ```
+
+## To-Do
+
+* Add tests
+* Rename components to same names as the react components
+* Change components to functions since you should have no more use of state?
+* Add CSV import/export
