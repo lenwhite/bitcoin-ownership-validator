@@ -59,11 +59,13 @@ class ViewAddresses extends Component {
               </div>
             </div>
           </h4></header>
-          <div>{wallet.message ?
-            <>{wallet.message}</>
-            :
-            <span className="text-light">No message</span>
-          }</div>
+          <p><span>Message to sign:  </span>
+            <code>{wallet.message ?
+              <>{wallet.message}</>
+              :
+              <span className="text-light">No message</span>
+            }</code>
+          </p>
         </div>)
       })}
       <hr />
